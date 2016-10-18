@@ -1,6 +1,7 @@
 package com.izeni.startingsql
 
 import android.app.Application
+import com.facebook.stetho.Stetho
 
 /**
  * Created by jonny on 10/17/16.
@@ -15,6 +16,9 @@ class App : Application() {
         super.onCreate()
 
         instance = this
+        Stetho.initializeWithDefaults(this)
+
+
     }
 
 }

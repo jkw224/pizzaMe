@@ -15,11 +15,14 @@ class Toppings: BaseColumns {
         val PRICE = "price"
 
         val SQL_CREATE_TOPPINGS_TABLE = "CREATE TABLE $TABLE_NAME (" +
-                BaseColumns._ID + " INTEGER PRIMARY KEY, " +
+                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Toppings.NAME + " TEXT NOT NULL, " +
-                Toppings.PRICE + " REAL NOT NULL) "
+                Toppings.PRICE + " INTEGER, " +
+                Pizza.PIZZA_ID + " INTEGER, " +
+                "FOREIGN KEY (${Pizza.PIZZA_ID}) REFERENCES ${Pizza.TABLE_NAME}(${BaseColumns._ID}));"
 
-        val SQL_DELETE_TOPPINGS_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME"
+
+        val SQL_DELETE_TOPPINGS_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME;"
 
     }
 
