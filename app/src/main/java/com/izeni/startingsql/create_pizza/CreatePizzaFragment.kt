@@ -74,13 +74,23 @@ class CreatePizzaFragment: Fragment() {
 
         toppingsSelectedRecycler.layoutManager = LinearLayoutManager(context)
         toppingsSelectedRecycler.isNestedScrollingEnabled = false
-        toppingsSelectedRecycler.adapter = GenericRecyclerAdapter(context, R.layout.item_topping, toppingsSelectedArray, {view: View -> ToppingsSelectedViewHolder(view) {
+        toppingsSelectedRecycler.adapter = GenericRecyclerAdapter(context, R.layout.item_topping, toppingsSelectedArray, {view: View -> ToppingsSelectedViewHolder(view) { topping, position ->
 
-            toppingsSelectedArray.remove(it)
-            toppingsPoolArray.add(it)
+            toppingsSelectedArray.removeAt(position)
+//            toppingsSelectedRecycler.adapter.notifyItemRemoved(position)
 
-            updateToppingsSelectedRecycler()
-            updateToppingsPoolRecycler()
+            toppingsSelectedRecycler.adapter.notifyDataSetChanged()
+            toppingsPoolRecycler.adapter.notifyDataSetChanged()
+
+//            val index = toppingsPoolArray.indexOfFirst { it.name == topping.name }
+//
+//            if(index >= 0) {
+//                toppingsPoolRecycler.adapter.notifyItemChanged(index)
+//
+//            }
+
+//            updateToppingsSelectedRecycler()
+//            updateToppingsPoolRecycler()
 
             /** Select vs Selected heading in fragment_create_pizza*/
             if (toppingsSelectedArray.size > 0) {
@@ -97,13 +107,17 @@ class CreatePizzaFragment: Fragment() {
     fun updateToppingsPoolRecycler() {
         toppingsPoolRecycler.layoutManager = LinearLayoutManager(context)
         toppingsPoolRecycler.isNestedScrollingEnabled = false
-        toppingsPoolRecycler.adapter = GenericRecyclerAdapter(context, R.layout.item_topping, toppingsPoolArray, {view: View -> ToppingsPoolViewHolder(view) {
+        toppingsPoolRecycler.adapter = GenericRecyclerAdapter(context, R.layout.item_topping, toppingsPoolArray, {view: View -> ToppingsPoolViewHolder(view, { topping, position ->
 
-            toppingsPoolArray.remove(it)
-            toppingsSelectedArray.add(it)
+//            toppingsPoolRecycler.adapter.notifyItemChanged(position)
+            toppingsSelectedArray.add(topping)
 
-            updateToppingsPoolRecycler()
-            updateToppingsSelectedRecycler()
+            toppingsSelectedRecycler.adapter.notifyDataSetChanged()
+            toppingsPoolRecycler.adapter.notifyDataSetChanged()
+
+
+//            updateToppingsPoolRecycler()
+//            updateToppingsSelectedRecycler()
 
             /** Select vs Selected heading in fragment_create_pizza*/
             if (toppingsSelectedArray.size > 0) {
@@ -111,7 +125,8 @@ class CreatePizzaFragment: Fragment() {
                 selected_divider1b.visibility = View.VISIBLE
             }
 
-        }})
+        }, { it in toppingsSelectedArray })
+        })
     }
 
 

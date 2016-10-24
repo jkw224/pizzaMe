@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.item_topping.view.*
 /**
  * Created by jonny on 10/21/16.
  */
-class ToppingsSelectedViewHolder(view: View, onItemClicked: ((Toppings) -> Unit)? = null): ViewHolder<Toppings>(view, onItemClicked) {
+class ToppingsSelectedViewHolder(view: View, val onItemClicked: ((Toppings, Int) -> Unit)? = null): ViewHolder<Toppings>(view) {
 
     override fun bind(item: Toppings) {
 
@@ -16,7 +16,7 @@ class ToppingsSelectedViewHolder(view: View, onItemClicked: ((Toppings) -> Unit)
 
         itemView.setOnClickListener {
 
-            onItemClicked?.invoke(item)
+            onItemClicked?.invoke(item, adapterPosition)
 
         }
 

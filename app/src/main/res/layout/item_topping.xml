@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    android:id="@+id/topping_text_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    style="@style/toppings_item_style"
-    android:text="Toppings list..."/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/topping_text_view"
+        style="@style/toppings_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:text="Toppings list..." />
+</LinearLayout>
