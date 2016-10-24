@@ -3,9 +3,47 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary500</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark900</item>
+        <item name="colorAccent">@color/colorAccentA700</item>
+    </style>
+
+    <style name="order_item_style" parent="android:Widget.TextView">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:background">@color/opaqueWhiteDark</item>
+        <item name="android:textColor">@color/colorPrimary500</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="toppings_item_style" parent="android:Widget.TextView">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:background">@color/opaqueWhiteDark</item>
+        <item name="android:textColor">@color/colorPrimary500</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="spinnerTitleStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimary500</item>
+        <item name="android:prompt">@string/crust_title</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/colorPrimary500</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <!--android:orientation="vertical"-->
+
     </style>
 
 </resources>

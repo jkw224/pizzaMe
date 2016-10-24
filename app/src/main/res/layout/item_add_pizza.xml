@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/add_pizza_price_guideline"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/rv_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/order_item_style"
+        android:text="Small Pepperoni Pizza"
+        android:ellipsize="marquee"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/add_pizza_price_guideline"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/add_pizza_price"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="@style/order_item_style"
+        android:padding="16dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="$100.00"
+        app:layout_constraintLeft_toLeftOf="@+id/add_pizza_price_guideline" />
+
+</android.support.constraint.ConstraintLayout>

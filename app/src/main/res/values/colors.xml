@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- https://material.google.com/style/color.html#color-color-palette -->
+    <color name="colorPrimary500">#03A9F4</color>
+    <color name="colorPrimaryDark900">#01579B</color>
+    <color name="colorAccentA700">#0091EA</color>
+    <color name="divider300">#4FC3F7</color>
+    <color name="lightBG100">#B3E5FC</color>
+    <color name="opaqueWhiteDark">#EEFFFFFF</color>
+    <color name="opaqueWhiteLight">#80FFFFFF</color>
+    <color name="lightGrey">#D6D6D8</color>
 </resources>
