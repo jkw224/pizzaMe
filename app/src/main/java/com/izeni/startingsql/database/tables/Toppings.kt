@@ -33,4 +33,10 @@ class Toppings( val name: String, val type: Int ): BaseColumns {
 
     }
 
+    override fun equals(other: Any?): Boolean {
+        if(other is Toppings) {
+            return other.name == name && other.type == type
+        }
+        return super.equals(other)
+    }
 }

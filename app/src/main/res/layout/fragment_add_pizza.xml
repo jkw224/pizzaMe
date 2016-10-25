@@ -24,10 +24,9 @@
         android:id="@+id/add_pizza_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
+        style="@style/fab_style"
         android:src="@drawable/add"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="22dp"
+        app:fabSize="normal"
         app:layout_anchor="@id/add_pizza_recycler"
         app:layout_anchorGravity="bottom|end" />
 

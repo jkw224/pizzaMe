@@ -12,11 +12,7 @@ import android.view.ViewGroup
 import com.izeni.startingsql.MainActivity
 import com.izeni.startingsql.R
 import com.izeni.startingsql.common.GenericRecyclerAdapter
-import com.izeni.startingsql.common.ViewHolder
 import kotlinx.android.synthetic.main.fragment_add_pizza.view.*
-import kotlinx.android.synthetic.main.item_add_pizza.view.*
-import org.jetbrains.annotations.Mutable
-import java.util.*
 
 /**
  * Created by jonny on 10/18/16.

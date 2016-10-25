@@ -6,8 +6,8 @@
     <string-array name="crusts_spinner_array">
         <item>Regular Crust</item>
         <item>Thin Crust</item>
-        <item>Deep Dish</item>
         <item>Stuffed Crust</item>
+        <item>Deep Dish</item>
     </string-array>
     
     <string-array name="size_spinner_array">

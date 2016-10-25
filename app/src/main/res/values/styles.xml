@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccentA700</item>
     </style>
 
+    <style name="fab_style">
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginBottom">22dp</item>
+    </style>
+
     <style name="order_item_style" parent="android:Widget.TextView">
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">16dp</item>
