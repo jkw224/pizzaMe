@@ -28,7 +28,7 @@ import android.widget.SpinnerAdapter
  * *
  * @param context
  */
-class NothingSelectedSpinnerAdapter (var spinnerAdapter: SpinnerAdapter, var nothingSelectedLayout: Int, var nothingSelectedDropdownLayout: Int, var context: Context) : SpinnerAdapter, ListAdapter {
+class NothingSelectedSpinnerAdapter (var context: Context, var spinnerAdapter: SpinnerAdapter, var nothingSelectedLayout: Int, var nothingSelectedDropdownLayout: Int) : SpinnerAdapter, ListAdapter {
 
     var layoutInflater: LayoutInflater
 
@@ -42,7 +42,7 @@ class NothingSelectedSpinnerAdapter (var spinnerAdapter: SpinnerAdapter, var not
      * *
      * @param context
      */
-    constructor(spinnerAdapter: SpinnerAdapter, nothingSelectedLayout: Int, context: Context) : this(spinnerAdapter, nothingSelectedLayout, -1, context) {
+    constructor(context: Context, spinnerAdapter: SpinnerAdapter, nothingSelectedLayout: Int) : this(context, spinnerAdapter, nothingSelectedLayout, -1) {
     }
 
     init {

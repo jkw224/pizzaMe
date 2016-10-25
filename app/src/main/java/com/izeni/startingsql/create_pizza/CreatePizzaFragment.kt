@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.SpinnerAdapter
 import com.izeni.startingsql.R
 import com.izeni.startingsql.common.GenericRecyclerAdapter
 import com.izeni.startingsql.common.NothingSelectedSpinnerAdapter
@@ -30,18 +33,20 @@ class CreatePizzaFragment: Fragment() {
     lateinit var toppingsSelectedArray: ArrayList<Toppings>
     lateinit var toppingsPoolArray: ArrayList<Toppings>
 
+    var pizzaSize: String? = ""
+    var pizzaType: String? = ""
+    var pizzaTopping1: String? = ""
+    var pizzaTopping2: String? = ""
+    var pizzaName: String? = ""
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(R.layout.fragment_create_pizza, container, false)
 
         view?.let {
 
-            /** Spinner */
             crustSpinner = view.crust_spinner as Spinner
             sizeSpinner = view.size_spinner as Spinner
-
-            createSpinner(crustSpinner, R.array.crusts_spinner_array, R.layout.spinner_nothing_selected_crust)
-            createSpinner(sizeSpinner, R.array.size_spinner_array, R.layout.spinner_nothing_selected_size)
 
             /** RecyclerViews */
             toppingsSelectedRecycler = view.toppings_selected_recycler1 as RecyclerView
@@ -58,6 +63,49 @@ class CreatePizzaFragment: Fragment() {
 
         }
 
+        /** Create size spinner, with item selected callback */
+        val sizeSpinnerAdapter = ArrayAdapter.createFromResource(context, R.array.size_spinner_array, R.layout.spinner_nothing_selected_size)
+        sizeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // customizing dropdown text
+        sizeSpinner.adapter = NothingSelectedSpinnerAdapter(context, sizeSpinnerAdapter, R.layout.spinner_nothing_selected_size)
+        sizeSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                /** Fix array position due to extending NothingSelectedSpinnerAdapter */
+                if (position == 0){
+                    pizzaSize = ""
+                } else {
+                    val correctedPosition = (position - 1)
+                    pizzaSize = resources.getStringArray(R.array.size_spinner_array)[ correctedPosition ]
+                    setPizzaName()
+                }
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+        }
+
+        /** Create crust spinner, with item selected callback */
+        val typeSpinnerAdapter = ArrayAdapter.createFromResource(context, R.array.crusts_spinner_array, R.layout.spinner_nothing_selected_crust)
+        typeSpinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // customizing dropdown text
+        crustSpinner.adapter = NothingSelectedSpinnerAdapter(context, typeSpinnerAdapter, R.layout.spinner_nothing_selected_crust)
+        crustSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                if (position == 0 ) {
+                    pizzaType = ""
+                } else {
+                    val correctedPosition = (position - 1)
+                    pizzaType = resources.getStringArray(R.array.crusts_spinner_array)[correctedPosition]
+                    setPizzaName()
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
         return view
     }
 
@@ -65,9 +113,7 @@ class CreatePizzaFragment: Fragment() {
      * Creating custom spinner (Custom title (not from array) and custom dropdown items)
      * http://stackoverflow.com/questions/867518/how-to-make-an-android-spinner-with-initial-text-select-one */
     fun createSpinner(targetSpinner: Spinner, spinnerArrayId: Int, spinnerLayoutId: Int) {
-        val spinnerAdapter = ArrayAdapter.createFromResource(context, spinnerArrayId, spinnerLayoutId)
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // customize dropdown text
-        targetSpinner.adapter = NothingSelectedSpinnerAdapter(spinnerAdapter, spinnerLayoutId, context)
+
     }
 
     fun updateToppingsSelectedRecycler() {
@@ -96,6 +142,7 @@ class CreatePizzaFragment: Fragment() {
             if (toppingsSelectedArray.size > 0) {
                 selected_divider1a.visibility = View.GONE
                 selected_divider1b.visibility = View.VISIBLE
+                selected_divider1b.text = "${toppingsSelectedArray.size} Selected"
             } else if (toppingsSelectedArray.size == 0) {
                 selected_divider1a.visibility = View.VISIBLE
                 selected_divider1b.visibility = View.GONE
@@ -123,6 +170,7 @@ class CreatePizzaFragment: Fragment() {
             if (toppingsSelectedArray.size > 0) {
                 selected_divider1a.visibility = View.GONE
                 selected_divider1b.visibility = View.VISIBLE
+                selected_divider1b.text = "${toppingsSelectedArray.size} Selected"
             }
 
         }, { it in toppingsSelectedArray })
@@ -135,12 +183,11 @@ class CreatePizzaFragment: Fragment() {
         /** Made an array of objects, because want to sort array according to Topping type */
         /** i.e Toppings.SAUCE, Toppings.MEAT, Toppings.SECONDARY (topping)*/
 
-        val sauceList = arrayListOf(Toppings("Tomato Sauce", Toppings.SAUCE),
+        val sauceList = arrayListOf(Toppings("Regular Sauce", Toppings.SAUCE),
                 Toppings("BBQ Sauce", Toppings.SAUCE), Toppings("Thai Sauce", Toppings.SAUCE),
                 Toppings("Chicken Alfredo Sauce", Toppings.SAUCE))
 
-        val meatsList = arrayListOf(Toppings("Cheese", Toppings.MEAT),
-                Toppings("Pepperoni", Toppings.MEAT), Toppings("Chicken", Toppings.MEAT),
+        val meatsList = arrayListOf( Toppings("Pepperoni", Toppings.MEAT), Toppings("Chicken", Toppings.MEAT),
                 Toppings("Bacon", Toppings.MEAT), Toppings("Canadian Bacon", Toppings.MEAT))
 
         val secondaryToppingsList = arrayListOf(Toppings("Pineapple", Toppings.SECONDARY), Toppings("Bell Peppers", Toppings.SECONDARY),
@@ -152,10 +199,18 @@ class CreatePizzaFragment: Fragment() {
         toppingsList.addAll(sauceList)
         toppingsList.addAll(meatsList)
         toppingsList.addAll(secondaryToppingsList)
-
+        toppingsList.add(Toppings("No Cheese", Toppings.CUSTOM_PIZZA))
+        toppingsList.add(Toppings("Cheese Pizza", Toppings.CUSTOM_PIZZA))
 
         return toppingsList
     }
 
+    fun setPizzaName() {
+
+        pizza_name.text = "${pizzaSize.safe(append = " ")}${pizzaType.safe(append = " ")}${pizzaTopping1.safe(append = " ")}${pizzaTopping2.safe(append = " ")}Pizza"
+
+    }
+
+    fun String?.safe(prepend: String = "", append: String = "") = if(isNullOrEmpty()) "" else "$prepend$this$append"
 
 }

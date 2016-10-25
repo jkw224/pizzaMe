@@ -29,6 +29,7 @@ class Toppings( val name: String, val type: Int ): BaseColumns {
         val SAUCE = 0
         val MEAT = 1
         val SECONDARY = 2
+        val CUSTOM_PIZZA = 3
 
     }
 
