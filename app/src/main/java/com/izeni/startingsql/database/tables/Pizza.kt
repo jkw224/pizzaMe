@@ -1,11 +1,12 @@
 package com.izeni.startingsql.database.tables
 
+import android.content.ContentValues
 import android.provider.BaseColumns
 
 /**
  * Created by jonny on 10/17/16.
  */
-class Pizza: BaseColumns {
+class Pizza(val pizName: String, val pizPrice: Int): BaseColumns {
 
     companion object {
 
@@ -24,5 +25,15 @@ class Pizza: BaseColumns {
 
     }
 
+    fun pizzaContentValues(): ContentValues {
+
+        var pizzaContentValues = ContentValues()
+
+        pizzaContentValues.put(NAME, pizName)
+        pizzaContentValues.put(PRICE, pizPrice)
+
+        return pizzaContentValues
+
+    }
 
 }

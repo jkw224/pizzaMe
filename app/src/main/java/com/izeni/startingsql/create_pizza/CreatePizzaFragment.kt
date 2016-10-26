@@ -1,5 +1,9 @@
 package com.izeni.startingsql.create_pizza
 
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.SQLException
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -11,9 +15,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.izeni.startingsql.MainActivity
 import com.izeni.startingsql.R
 import com.izeni.startingsql.common.GenericRecyclerAdapter
 import com.izeni.startingsql.common.NothingSelectedSpinnerAdapter
+import com.izeni.startingsql.database.DatabaseManager
+import com.izeni.startingsql.database.tables.Crust
+import com.izeni.startingsql.database.tables.Pizza
+import com.izeni.startingsql.database.tables.Size
 import com.izeni.startingsql.database.tables.Toppings
 import kotlinx.android.synthetic.main.fragment_create_pizza.*
 import kotlinx.android.synthetic.main.fragment_create_pizza.view.*
@@ -25,6 +34,7 @@ import java.util.*
  */
 class CreatePizzaFragment: Fragment() {
 
+    lateinit var mainActivity: MainActivity
     lateinit var fabCreatePizza: FloatingActionButton
     lateinit var toppingsSelectedRecycler: RecyclerView
     lateinit var toppingsPoolRecycler: RecyclerView
@@ -33,16 +43,19 @@ class CreatePizzaFragment: Fragment() {
     lateinit var toppingsSelectedArray: ArrayList<Toppings>
     lateinit var toppingsPoolArray: ArrayList<Toppings>
 
-    var pizzaSize: String? = ""
-    var pizzaType: String? = ""
-    var pizzaTopping1: String? = ""
-    var pizzaTopping2: String? = ""
-    var pizzaName: String? = ""
+    var pizzaName: String = ""
+    var pizzaPrice: Int = 0
 
+    var pizzaSize: String = ""
     var sizePrice = 0
-    var typePrice = 0
+
+    var crustType: String = ""
+    var crustPrice = 0
+
+    var pizzaTopping1: String = ""
+    var pizzaTopping2: String = ""
     var toppingsPrice = 0
-    var pizzaPrice: Int? = 0
+
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +80,6 @@ class CreatePizzaFragment: Fragment() {
             updateToppingsPoolRecycler()
 
         }
-
 
         /** Create size spinner, with item selected callback */
         val sizeSpinnerAdapter = ArrayAdapter.createFromResource(context, R.array.size_spinner_array, R.layout.spinner_nothing_selected_size)
@@ -102,10 +114,10 @@ class CreatePizzaFragment: Fragment() {
 
                 /** Fixing array position due to extending NothingSelectedSpinnerAdapter instead of default adapter */
                 if (position == 0) {
-                    pizzaType = ""
+                    crustType = ""
                 } else {
                     val correctedPosition = (position - 1)
-                    pizzaType = resources.getStringArray(R.array.crusts_spinner_array)[correctedPosition]
+                    crustType = resources.getStringArray(R.array.crusts_spinner_array)[correctedPosition]
                     createPizzaName()
                     createPizzaPrice(null, correctedPosition, 0)
                 }
@@ -117,6 +129,16 @@ class CreatePizzaFragment: Fragment() {
         }
 
         return view
+    }
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is MainActivity) {
+            mainActivity = context
+        }
+
     }
 
 
@@ -222,7 +244,7 @@ class CreatePizzaFragment: Fragment() {
     fun createPizzaName() {
         /** Not going to include topping (pizzaTopping1 & pizzaTopping2) in Pizza name */
         /** I'll pull from SQLite and add that info in the AddPizzaFragment */
-        pizzaName = "${pizzaSize.safe(append = " ")}${pizzaType.safe(append = " ")}${pizzaTopping1.safe(append = " ")}${pizzaTopping2.safe(append = " ")}Pizza"
+        pizzaName = "${pizzaSize.safe(append = " ")}${crustType.safe(append = " ")}${pizzaTopping1.safe(append = " ")}${pizzaTopping2.safe(append = " ")}Pizza"
         pizza_name.text = pizzaName
     }
 
@@ -244,18 +266,18 @@ class CreatePizzaFragment: Fragment() {
         pizzaTypeSpinnerPosition.let {
             when (pizzaTypeSpinnerPosition) {
             /** Price in US cents */
-                0 -> typePrice = 0   /** No extra for Regular Crust */
-                1 -> typePrice = 0   /** No extra for Thin Crust */
-                2 -> typePrice = 150 /** Stuffed Crust = $1.50 */
-                3 -> typePrice = 150 /** Deep Dish = $1.50 */
+                0 -> crustPrice = 0   /** No extra for Regular Crust */
+                1 -> crustPrice = 0   /** No extra for Thin Crust */
+                2 -> crustPrice = 150 /** Stuffed Crust = $1.50 */
+                3 -> crustPrice = 150 /** Deep Dish = $1.50 */
             }
         }
 
-        /** equals overridden in Toppings.kt */
+        /** equals method (for Toppings class) overridden in Toppings.kt */
+        /** if regular sauce is selected ... */
         val regSauce = Toppings("Regular Sauce", Toppings.SAUCE) in toppingsSelectedArray
         // Same as...
         // toppingsSelectedArray.contains(Toppings("Regular Sauce", Toppings.SAUCE))
-
 
         /** Price in US cents */
         toppingsPrice =
@@ -268,20 +290,90 @@ class CreatePizzaFragment: Fragment() {
                 } else 0
 
 
-        pizzaPrice = sizePrice + typePrice + toppingsPrice
+        pizzaPrice = sizePrice + crustPrice + toppingsPrice
 
-        val dollars = pizzaPrice!!.toFloat() / 100f
+        val dollars = pizzaPrice.toFloat() / 100f
         pizza_price.text = "$%.2f".format(dollars)
 
+
         /** Show Fab when all items have been selected */
-        if (pizzaSize != "" && pizzaType != "" && toppingsSelectedArray.isNotEmpty()) {
+        if (pizzaSize != "" && crustType != "" && toppingsSelectedArray.isNotEmpty()) {
             fabCreatePizza.visibility = View.VISIBLE
+
+            /** Pressing FAB will save all pizza info to database tables and move back to AddPizzaFragment */
             fabCreatePizza.setOnClickListener {
 
+                val writeableDb = DatabaseManager(context).writableDatabase
+
+                try {
+                    /** insert into database as a batch */
+                    writeableDb.beginTransaction()
+
+                    try {
+                        // https://developer.android.com/training/basics/data-storage/databases.html#DbHelper
+                        /** Pizza Table */
+                        val pizzaObject = Pizza(pizzaName, pizzaPrice)
+                        val pizzaId = writeToDb(writeableDb, Pizza.TABLE_NAME, pizzaObject.pizzaContentValues())
+
+                        /** Toppings Table */
+                        for (i in toppingsSelectedArray.indices) {
+
+                            /** Calculate toppings price */
+                            var pricePerTopping: Int
+                            if (regSauce)
+                                if (i < 4) {
+                                    pricePerTopping = 0
+                                } else {
+                                    pricePerTopping = 50
+                                }
+                            else if (!regSauce) {
+                                if (i < 3) {
+                                    pricePerTopping = 0
+                                } else {
+                                    pricePerTopping = 50
+                                }
+                            } else {
+                                pricePerTopping = 0
+                            }
+
+                            val toppingContentValuesWithPizzaId = toppingsSelectedArray[i].contentValues(numToppings, regSauce, pricePerTopping).apply { put(Pizza.PIZZA_ID, pizzaId) }
+                            writeToDb(writeableDb, Toppings.TABLE_NAME, toppingContentValuesWithPizzaId)
+                        }
+
+                        /** Crust Table */
+                        val crust = Crust(crustType, crustPrice)
+                        writeToDb(writeableDb, Crust.TABLE_NAME, crust.contentValues().apply { put(Pizza.PIZZA_ID, pizzaId) })
+
+                        /** Size Table */
+                        val size = Size(pizzaSize, sizePrice)
+                        writeToDb(writeableDb, Size.TABLE_NAME, size.contentValues().apply { put(Pizza.PIZZA_ID, pizzaId) })
+
+                    } catch(e: SQLException) {
+                        e.printStackTrace()
+                    } finally {
+                            writeableDb.setTransactionSuccessful()
+                    }
+
+                }  catch (e: SQLException){
+                    e.printStackTrace()
+                }  finally {
+                    writeableDb.endTransaction()
+                }
+
+
+                writeableDb.close()
+
+                mainActivity.moveToAddPizzaList()
+
             }
+        /** When all inputs not selected, hide FAB */
         } else {
             fabCreatePizza.visibility = View.GONE
         }
 
+    }
+
+    fun writeToDb(writableDb: SQLiteDatabase, tableName: String, contentValues: ContentValues): Long {
+        return writableDb.insert(tableName, null, contentValues)
     }
 }

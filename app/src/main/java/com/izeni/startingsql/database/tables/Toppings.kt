@@ -1,11 +1,12 @@
 package com.izeni.startingsql.database.tables
 
+import android.content.ContentValues
 import android.provider.BaseColumns
 
 /**
  * Created by jonny on 10/17/16.
  */
-class Toppings( val name: String, val type: Int ): BaseColumns {
+class Toppings( val name: String, val type: Int): BaseColumns {
 
     companion object {
 
@@ -31,6 +32,16 @@ class Toppings( val name: String, val type: Int ): BaseColumns {
         val SECONDARY = 2
         val CUSTOM_PIZZA = 3
 
+    }
+
+    fun contentValues(numToppings: Int, regSauce: Boolean, pricePerTopping: Int ): ContentValues {
+        val contentValues = ContentValues()
+
+        contentValues.put(NAME, name)
+        contentValues.put(PRICE, pricePerTopping)
+        contentValues.put(TYPE, type)
+
+        return contentValues
     }
 
     override fun equals(other: Any?): Boolean {

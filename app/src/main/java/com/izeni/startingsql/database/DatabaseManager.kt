@@ -12,7 +12,7 @@ import com.izeni.startingsql.database.tables.Toppings
 /**
  * Created by jonny on 10/17/16.
  */
-class DatabaseManager(context: Context): SQLiteOpenHelper(context, "OrderPizza.db", null, 1) {
+class DatabaseManager(context: Context): SQLiteOpenHelper(context, "PizzaOrders.db", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(Orders.SQL_CREATE_ORDERS_TABLE)
