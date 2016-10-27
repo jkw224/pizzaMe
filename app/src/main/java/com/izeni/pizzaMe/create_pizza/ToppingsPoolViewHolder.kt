@@ -1,8 +1,8 @@
-package com.izeni.startingsql.create_pizza
+package com.izeni.pizzaMe.create_pizza
 
 import android.view.View
-import com.izeni.startingsql.common.ViewHolder
-import com.izeni.startingsql.database.tables.Toppings
+import com.izeni.pizzaMe.common.ViewHolder
+import com.izeni.pizzaMe.database.tables.Toppings
 import kotlinx.android.synthetic.main.item_topping.view.*
 
 /**

@@ -1,4 +1,4 @@
-package com.izeni.startingsql.past_orders
+package com.izeni.pizzaMe.past_orders
 
 /**
  * Created by jonny on 10/18/16.

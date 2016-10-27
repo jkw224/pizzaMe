@@ -6,7 +6,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "com.izeni.startingsql"
+        applicationId "com.izeni.pizzaMe"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
@@ -38,6 +38,8 @@ dependencies {
     compile "com.android.support:design:$support_version"
     // constraint layout
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta1'
+    // threetenABP
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
     // stetho
     compile 'com.facebook.stetho:stetho:1.4.1'
     testCompile 'junit:junit:4.12'

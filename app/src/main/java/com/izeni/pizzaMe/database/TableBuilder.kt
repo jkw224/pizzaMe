@@ -1,4 +1,4 @@
-package com.izeni.startingsql.database
+package com.izeni.pizzaMe.database
 
 /**
  * Created by jonny on 10/17/16.

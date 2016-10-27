@@ -1,11 +1,11 @@
-package com.izeni.startingsql.common
+package com.izeni.pizzaMe.common
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.izeni.startingsql.R
+import com.izeni.pizzaMe.R
 import kotlinx.android.synthetic.main.item_add_pizza.view.*
 import java.util.*
 

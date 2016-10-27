@@ -1,4 +1,4 @@
-package com.izeni.startingsql.common
+package com.izeni.pizzaMe.common
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

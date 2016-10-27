@@ -9,8 +9,14 @@
     </style>
 
     <style name="fab_style">
+        <item name="android:layout_marginBottom">20dp</item>
         <item name="android:layout_marginEnd">24dp</item>
+    </style>
+
+    <style name="order_button_style">
         <item name="android:layout_marginBottom">22dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">104dp</item>
     </style>
 
     <style name="order_item_style" parent="android:Widget.TextView">
@@ -20,7 +26,7 @@
         <item name="android:background">@color/opaqueWhiteDark</item>
         <item name="android:textColor">@color/colorPrimary500</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">19sp</item>
     </style>
 
     <style name="toppings_item_style" parent="android:Widget.TextView">

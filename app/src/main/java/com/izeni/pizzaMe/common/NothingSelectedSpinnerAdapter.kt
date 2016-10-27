@@ -1,4 +1,4 @@
-package com.izeni.startingsql.common
+package com.izeni.pizzaMe.common
 
 import android.content.Context
 import android.database.DataSetObserver

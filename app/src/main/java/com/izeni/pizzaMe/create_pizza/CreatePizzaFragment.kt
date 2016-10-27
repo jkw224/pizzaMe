@@ -1,4 +1,4 @@
-package com.izeni.startingsql.create_pizza
+package com.izeni.pizzaMe.create_pizza
 
 import android.content.ContentValues
 import android.content.Context
@@ -15,15 +15,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import com.izeni.startingsql.MainActivity
-import com.izeni.startingsql.R
-import com.izeni.startingsql.common.GenericRecyclerAdapter
-import com.izeni.startingsql.common.NothingSelectedSpinnerAdapter
-import com.izeni.startingsql.database.DatabaseManager
-import com.izeni.startingsql.database.tables.Crust
-import com.izeni.startingsql.database.tables.Pizza
-import com.izeni.startingsql.database.tables.Size
-import com.izeni.startingsql.database.tables.Toppings
+import com.izeni.pizzaMe.MainActivity
+import com.izeni.pizzaMe.R
+import com.izeni.pizzaMe.common.GenericRecyclerAdapter
+import com.izeni.pizzaMe.common.NothingSelectedSpinnerAdapter
+import com.izeni.pizzaMe.common.Utils
+import com.izeni.pizzaMe.database.DatabaseManager
+import com.izeni.pizzaMe.database.tables.Crust
+import com.izeni.pizzaMe.database.tables.Pizza
+import com.izeni.pizzaMe.database.tables.Size
+import com.izeni.pizzaMe.database.tables.Toppings
 import kotlinx.android.synthetic.main.fragment_create_pizza.*
 import kotlinx.android.synthetic.main.fragment_create_pizza.view.*
 import java.util.*
@@ -218,15 +219,15 @@ class CreatePizzaFragment: Fragment() {
         /** Made an array of objects, because want to sort array according to Topping type */
         /** i.e Toppings.SAUCE, Toppings.MEAT, Toppings.SECONDARY (topping)*/
 
-        val sauceList = arrayListOf(Toppings("Regular Sauce", Toppings.SAUCE),
-                Toppings("BBQ Sauce", Toppings.SAUCE), Toppings("Thai Sauce", Toppings.SAUCE),
-                Toppings("Chicken Alfredo Sauce", Toppings.SAUCE))
+        val sauceList = arrayListOf(Toppings("Regular Sauce", Toppings.Companion.SAUCE),
+                Toppings("BBQ Sauce", Toppings.Companion.SAUCE), Toppings("Thai Sauce", Toppings.Companion.SAUCE),
+                Toppings("Chicken Alfredo Sauce", Toppings.Companion.SAUCE))
 
-        val meatsList = arrayListOf(Toppings("Pepperoni", Toppings.MEAT), Toppings("Chicken", Toppings.MEAT),
-                Toppings("Bacon", Toppings.MEAT), Toppings("Canadian Bacon", Toppings.MEAT))
+        val meatsList = arrayListOf(Toppings("Pepperoni", Toppings.Companion.MEAT), Toppings("Chicken", Toppings.Companion.MEAT),
+                Toppings("Bacon", Toppings.Companion.MEAT), Toppings("Canadian Bacon", Toppings.Companion.MEAT))
 
-        val secondaryToppingsList = arrayListOf(Toppings("Pineapple", Toppings.SECONDARY), Toppings("Bell Peppers", Toppings.SECONDARY),
-                Toppings("Onions", Toppings.SECONDARY), Toppings("Mushroom", Toppings.SECONDARY))
+        val secondaryToppingsList = arrayListOf(Toppings("Pineapple", Toppings.Companion.SECONDARY), Toppings("Bell Peppers", Toppings.Companion.SECONDARY),
+                Toppings("Onions", Toppings.Companion.SECONDARY), Toppings("Mushroom", Toppings.Companion.SECONDARY))
 
 
         val toppingsList: ArrayList<Toppings> = arrayListOf()
@@ -234,8 +235,8 @@ class CreatePizzaFragment: Fragment() {
         toppingsList.addAll(sauceList)
         toppingsList.addAll(meatsList)
         toppingsList.addAll(secondaryToppingsList)
-        toppingsList.add(Toppings("No Cheese", Toppings.CUSTOM_PIZZA))
-        toppingsList.add(Toppings("Cheese Pizza", Toppings.CUSTOM_PIZZA))
+        toppingsList.add(Toppings("No Cheese", Toppings.Companion.CUSTOM_PIZZA))
+        toppingsList.add(Toppings("Cheese Pizza", Toppings.Companion.CUSTOM_PIZZA))
 
         return toppingsList
     }
@@ -275,7 +276,7 @@ class CreatePizzaFragment: Fragment() {
 
         /** equals method (for Toppings class) overridden in Toppings.kt */
         /** if regular sauce is selected ... */
-        val regSauce = Toppings("Regular Sauce", Toppings.SAUCE) in toppingsSelectedArray
+        val regSauce = Toppings("Regular Sauce", Toppings.Companion.SAUCE) in toppingsSelectedArray
         // Same as...
         // toppingsSelectedArray.contains(Toppings("Regular Sauce", Toppings.SAUCE))
 
@@ -292,7 +293,7 @@ class CreatePizzaFragment: Fragment() {
 
         pizzaPrice = sizePrice + crustPrice + toppingsPrice
 
-        val dollars = pizzaPrice.toFloat() / 100f
+        val dollars = Utils.convertCentsToDollars(pizzaPrice)
         pizza_price.text = "$%.2f".format(dollars)
 
 

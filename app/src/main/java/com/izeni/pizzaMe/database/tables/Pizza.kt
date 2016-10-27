@@ -1,4 +1,4 @@
-package com.izeni.startingsql.database.tables
+package com.izeni.pizzaMe.database.tables
 
 import android.content.ContentValues
 import android.provider.BaseColumns
@@ -16,12 +16,12 @@ class Pizza(val pizName: String, val pizPrice: Int): BaseColumns {
         val PRICE: String = "price"
         val PIZZA_ID: String = "pizza_id"
 
-        val SQL_CREATE_PIZZA_TABLE = "CREATE TABLE $TABLE_NAME (" +
+        val SQL_CREATE_PIZZA_TABLE = "CREATE TABLE ${TABLE_NAME} (" +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                Pizza.NAME + " TEXT, " +
-                Pizza.PRICE + " INTEGER)"
+                NAME + " TEXT, " +
+                PRICE + " INTEGER)"
 
-        val SQL_DELETE_PIZZA_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME;"
+        val SQL_DELETE_PIZZA_TABLE = "DROP TABLE IF EXISTS ${TABLE_NAME};"
 
     }
 

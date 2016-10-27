@@ -1,13 +1,13 @@
-package com.izeni.startingsql.database
+package com.izeni.pizzaMe.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.izeni.startingsql.database.tables.Orders
-import com.izeni.startingsql.database.tables.Crust
-import com.izeni.startingsql.database.tables.Pizza
-import com.izeni.startingsql.database.tables.Size
-import com.izeni.startingsql.database.tables.Toppings
+import com.izeni.pizzaMe.database.tables.Order
+import com.izeni.pizzaMe.database.tables.Crust
+import com.izeni.pizzaMe.database.tables.Pizza
+import com.izeni.pizzaMe.database.tables.Size
+import com.izeni.pizzaMe.database.tables.Toppings
 
 /**
  * Created by jonny on 10/17/16.
@@ -15,7 +15,7 @@ import com.izeni.startingsql.database.tables.Toppings
 class DatabaseManager(context: Context): SQLiteOpenHelper(context, "PizzaOrders.db", null, 1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(Orders.SQL_CREATE_ORDERS_TABLE)
+        db?.execSQL(Order.SQL_CREATE_ORDERS_TABLE)
         db?.execSQL(Pizza.SQL_CREATE_PIZZA_TABLE)
         db?.execSQL(Size.SQL_CREATE_SIZE_TABLE)
         db?.execSQL(Toppings.SQL_CREATE_TOPPINGS_TABLE)
@@ -27,7 +27,7 @@ class DatabaseManager(context: Context): SQLiteOpenHelper(context, "PizzaOrders.
 /*        when (db) {
             is
         }
-        db?.execSQL(Orders.SQL_DELETE_ORDERS_TABLE)
+        db?.execSQL(Order.SQL_DELETE_ORDERS_TABLE)
         db?.execSQL(Pizza.SQL_DELETE_PIZZA_TABLE)
         db?.execSQL(Size.SQL_DELETE_SIZE_TABLE)
         db?.execSQL(Toppings.SQL_DELETE_TOPPINGS_TABLE)
